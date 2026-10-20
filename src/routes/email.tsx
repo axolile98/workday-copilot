@@ -13,6 +13,8 @@ export const Route = createFileRoute("/email")({
       { name: "description", content: "Generate professional emails in Formal, Friendly or Persuasive tones, then edit and copy." },
       { property: "og:title", content: "Smart Email Generator — WorkPilot AI" },
       { property: "og:description", content: "Turn quick instructions into polished workplace emails." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
   component: EmailPage,
@@ -29,16 +31,21 @@ function EmailPage() {
   const [subject, setSubject] = useState("");
   const [output, setOutput] = useState("");
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
   const [history, setHistory] = useLocal<Item[]>("wp-email-history", []);
 
   async function submit(e: React.FormEvent) {
     e.preventDefault();
-    if (!instructions.trim()) return;
-    setLoading(true); setOutput("");
-    await delay();
-    const text = generateEmail({ instructions, recipient, subject, tone, sender });
-    setOutput(text); setLoading(false);
-    setHistory((h) => [{ id: Date.now(), tone, text }, ...h].slice(0, 10));
+    if (!instructions.trim() || loading) return;
+    setLoading(true); setOutput(""); setError("");
+    try {
+      await delay();
+      const text = generateEmail({ instructions, recipient, subject, tone, sender });
+      setOutput(text);
+      setHistory((h) => [{ id: Date.now(), tone, text }, ...h].slice(0, 10));
+    } catch {
+      setError("The draft could not be prepared. Please try again.");
+    } finally { setLoading(false); }
   }
 
   return (
@@ -49,7 +56,7 @@ function EmailPage() {
           <form onSubmit={submit} className="space-y-4">
             <div>
               <label className="mb-1.5 block text-sm font-medium">What should the email say? *</label>
-              <textarea required rows={5} className={inputCls} value={instructions} onChange={(e) => setInstructions(e.target.value)}
+              <textarea aria-label="Email instructions" required rows={5} className={inputCls} value={instructions} onChange={(e) => setInstructions(e.target.value)}
                 placeholder="e.g. Ask the finance team to approve the Q3 marketing budget by Friday" />
             </div>
             <div className="grid gap-3 sm:grid-cols-2">
@@ -61,12 +68,13 @@ function EmailPage() {
               <label className="mb-1.5 block text-sm font-medium">Tone</label>
               <div className="grid grid-cols-3 gap-2">
                 {tones.map((t) => (
-                  <button type="button" key={t} onClick={() => setTone(t)}
-                    className={cn("rounded-xl border px-3 py-2 text-sm font-medium transition", tone === t ? "border-primary bg-secondary text-primary" : "hover:bg-muted")}>{t}</button>
+                  <Button variant="outline" aria-pressed={tone === t} type="button" key={t} onClick={() => setTone(t)}
+                    className={cn("px-3 py-2", tone === t && "border-primary bg-secondary text-primary")}>{t}</Button>
                 ))}
               </div>
             </div>
             <Button type="submit" className="w-full" disabled={loading || !instructions.trim()}><Wand2 className="h-4 w-4" />Generate email</Button>
+            {error && <p role="alert" className="text-sm text-destructive">{error}</p>}
           </form>
         </Card>
         <Card className="flex flex-col">
@@ -75,7 +83,7 @@ function EmailPage() {
             <CopyButton text={output} />
           </div>
           {loading ? <Loading label="Drafting your email…" /> : output ? (
-            <textarea className={cn(inputCls, "min-h-80 flex-1 font-mono text-[13px] leading-relaxed")} value={output} onChange={(e) => setOutput(e.target.value)} />
+            <textarea aria-label="Email draft" className={cn(inputCls, "min-h-80 flex-1 font-mono text-[13px] leading-relaxed")} value={output} onChange={(e) => setOutput(e.target.value)} />
           ) : <Empty icon={<Mail className="h-6 w-6" />} title="No email yet" text="Fill in the instructions and pick a tone to generate an editable draft." />}
         </Card>
       </div>

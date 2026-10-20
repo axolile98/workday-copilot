@@ -13,6 +13,8 @@ export const Route = createFileRoute("/research")({
       { name: "description", content: "Summaries, key insights and actionable recommendations from topics, articles or URLs." },
       { property: "og:title", content: "AI Research Assistant — WorkPilot AI" },
       { property: "og:description", content: "Turn topics and articles into insights and next steps." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
   component: ResearchPage,
@@ -35,18 +37,23 @@ function ResearchPage() {
   const [result, setResult] = useState<ResearchResult | null>(null);
   const [notes, setNotes] = useState("");
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
   const [history, setHistory] = useLocal<ResearchResult[]>("wp-research-history", []);
-  const m = modes.find((x) => x.id === mode)!;
+  const m = modes.find((x) => x.id === mode) ?? modes[0];
   const urlInvalid = mode === "url" && value.trim() !== "" && !/^https?:\/\/\S+\.\S+/.test(value.trim());
 
   async function submit(e: React.FormEvent) {
     e.preventDefault();
-    if (!value.trim() || urlInvalid) return;
-    setLoading(true); setResult(null);
-    await delay(1200);
-    const r = research({ mode, value });
-    setResult(r); setNotes(toText(r)); setLoading(false);
-    setHistory((h) => [r, ...h].slice(0, 8));
+    if (!value.trim() || urlInvalid || loading) return;
+    setLoading(true); setResult(null); setError("");
+    try {
+      await delay();
+      const r = research({ mode, value });
+      setResult(r); setNotes(toText(r));
+      setHistory((h) => [r, ...h].slice(0, 8));
+    } catch {
+      setError("The report could not be prepared. Please try again.");
+    } finally { setLoading(false); }
   }
 
   return (
@@ -56,17 +63,18 @@ function ResearchPage() {
         <form onSubmit={submit} className="space-y-4">
           <div className="inline-flex rounded-xl bg-muted p-1">
             {modes.map((x) => (
-              <button type="button" key={x.id} onClick={() => setMode(x.id)}
-                className={cn("rounded-lg px-3 py-1.5 text-sm font-medium transition", mode === x.id ? "bg-card text-primary shadow-card" : "text-muted-foreground")}>{x.label}</button>
+              <Button variant="ghost" aria-pressed={mode === x.id} disabled={loading} type="button" key={x.id} onClick={() => { setMode(x.id); setValue(""); setResult(null); setNotes(""); setError(""); }}
+                className={cn("rounded-lg px-3 py-1.5 text-sm font-medium transition", mode === x.id ? "bg-card text-primary shadow-card" : "text-muted-foreground")}>{x.label}</Button>
             ))}
           </div>
           {mode === "article" ? (
-            <textarea rows={7} className={inputCls} value={value} onChange={(e) => setValue(e.target.value)} placeholder={m.ph} />
+            <textarea aria-label="Research source" rows={7} className={inputCls} value={value} onChange={(e) => setValue(e.target.value)} placeholder={m.ph} />
           ) : (
-            <input className={inputCls} value={value} onChange={(e) => setValue(e.target.value)} placeholder={m.ph} />
+            <input aria-label="Research source" className={inputCls} value={value} onChange={(e) => setValue(e.target.value)} placeholder={m.ph} />
           )}
           {urlInvalid && <p className="text-sm text-destructive">Enter a full URL starting with http:// or https://</p>}
           <Button type="submit" disabled={loading || !value.trim() || urlInvalid}><Search className="h-4 w-4" />Analyse</Button>
+          {error && <p role="alert" className="text-sm text-destructive">{error}</p>}
         </form>
       </Card>
 
@@ -82,7 +90,7 @@ function ResearchPage() {
             )}
             <div className="grid gap-4 md:grid-cols-3">
               <Section title="Summary"><p>{result.summary}</p></Section>
-              <Section title="Key insights"><ul className="list-disc space-y-1.5 pl-4">{result.insights.map((i) => <li key={i}>{i}</li>)}</ul></Section>
+              <Section title="Key insights">{result.insights.length ? <ul className="list-disc space-y-1.5 pl-4">{result.insights.map((i) => <li key={i}>{i}</li>)}</ul> : <p>No source-backed findings available.</p>}</Section>
               <Section title="Recommendations"><ul className="list-disc space-y-1.5 pl-4">{result.recommendations.map((i) => <li key={i}>{i}</li>)}</ul></Section>
             </div>
             <div>

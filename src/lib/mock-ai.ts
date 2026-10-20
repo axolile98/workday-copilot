@@ -17,6 +17,8 @@ function emailBody(instructions: string, tone: Tone) {
   text = text.replace(/^(?:to\s+)?(?:tell|inform|notify|let)\s+.+?\s+(?:that|know that|know)\s+/i, "");
   text = text.replace(/^to\s+(?=(?:request|confirm|thank|apologise|apologize|follow up|invite)\b)/i, "");
   text = text.replace(/^request\s+/i, "I would like to request ")
+    .replace(/^asking for\s+/i, "I would like to request ")
+    .replace(/^asking\s+(?:.+?\s+)?to\s+/i, "Could you please ")
     .replace(/^confirm\s+/i, "I am writing to confirm ")
     .replace(/^thank\s+(?:.+?\s+)?for\s+/i, "Thank you for ")
     .replace(/^apologi[sz]e\s+(?:to\s+.+?\s+)?for\s+/i, "I apologise for ")

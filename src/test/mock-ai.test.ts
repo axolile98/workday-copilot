@@ -34,6 +34,7 @@ describe("Offline response grounding", () => {
     const result = chatReply("Make it friendly", [{role: "user", content: first}, {role: "assistant", content: answer}, {role: "user", content: "Make it friendly"}]);
     expect(result).toContain("budget approval by Tuesday");
     expect(result).toContain("Hi [Recipient]");
+    expect(result).toContain("I would like to request budget approval by Tuesday.");
     expect(result).not.toContain("Make it friendly");
   });
 });

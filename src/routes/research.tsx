@@ -39,7 +39,7 @@ function ResearchPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [history, setHistory] = useLocal<ResearchResult[]>("wp-research-history", []);
-  const m = modes.find((x) => x.id === mode) ?? modes[0];
+  const m = modes.find((x) => x.id === mode) ?? { id: "topic", label: "Topic", ph: "Enter your research topic" };
   const urlInvalid = mode === "url" && value.trim() !== "" && !/^https?:\/\/\S+\.\S+/.test(value.trim());
 
   async function submit(e: React.FormEvent) {

@@ -27,7 +27,7 @@ function emailBody(instructions: string, tone: Tone) {
 export function generateEmail(input: { instructions: string; recipient: string; subject: string; tone: Tone; sender: string }) {
   const { tone } = input;
   const topic = cleanRequest(input.instructions);
-  const subject = input.subject.trim() || cap(topic.split(/\n/)[0].split(/\s+/).slice(0, 10).join(" "));
+  const subject = input.subject.trim() || cap((topic.split(/\n/)[0] ?? topic).split(/\s+/).slice(0, 10).join(" "));
   const recipient = input.recipient.trim() || "[Recipient]";
   const sender = input.sender.trim() || "[Your name]";
   const greet = { Formal: `Dear ${recipient},`, Friendly: `Hi ${recipient},`, Persuasive: `Hello ${recipient},` }[tone];

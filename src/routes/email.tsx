@@ -86,7 +86,7 @@ function EmailPage() {
           <ul className="divide-y">
             {history.map((h) => (
               <li key={h.id}><button className="w-full py-2.5 text-left text-sm hover:text-primary" onClick={() => setOutput(h.text)}>
-                <span className="mr-2 rounded-full bg-secondary px-2 py-0.5 text-xs">{h.tone}</span>{h.text.split("\n")[0].replace("Subject: ", "")}
+                <span className="mr-2 rounded-full bg-secondary px-2 py-0.5 text-xs">{h.tone}</span>{(h.text.split("\n")[0] ?? "").replace("Subject: ", "")}
               </button></li>
             ))}
           </ul>

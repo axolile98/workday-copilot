@@ -10,6 +10,8 @@ export const Route = createFileRoute("/")({
       { name: "description", content: "Draft emails, research topics and chat with a workplace assistant — a browser-based AI productivity prototype." },
       { property: "og:title", content: "WorkPilot AI — Workplace Productivity Assistant" },
       { property: "og:description", content: "Smart emails, research summaries and a workplace chatbot in one dashboard." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
   component: Index,

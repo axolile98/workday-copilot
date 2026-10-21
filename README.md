@@ -1,38 +1,85 @@
-# Workday Copilot
+# AI Workplace Productivity Assistant
 
-Build a modern, responsive SaaS web app called AI Workplace Productivity Assistant using React and Tailwind CSS. Use a professional light-blue, navy, and white theme with a clean dashboard, sidebar navigation, rounded cards, and mobile-friendly layouts.
+## Project Overview
 
-Features:
+The **AI Workplace Productivity Assistant** is a modern, responsive web application designed to help professionals improve productivity by simplifying everyday workplace tasks using AI.
 
-Smart Email Generator: Generate professional emails from user instructions with Formal, Friendly, and Persuasive tones. Allow editing and copying outputs.
+The application provides tools for generating professional emails, summarising information, receiving recommendations, and interacting with an AI workplace assistant.
 
-AI Research Assistant: Accept topics, pasted articles, and website URLs. Provide summaries, key insights, and actionable recommendations. Clearly indicate when URL content cannot be accessed.
+## Features Implemented
 
-AI Chatbot: Interactive workplace assistant for drafting, brainstorming, summarising, and solving everyday work tasks. Maintain conversation history within the session.
+- **Smart Email Generator:** Generate professional emails using Formal, Friendly, and Persuasive tones.
+- **AI Assistant:** Summarise text and provide insights and recommendations.
+- **AI Chatbot:** Interact with a workplace assistant through user prompts.
+- **Editable Outputs:** Edit, copy, and reuse generated content.
+- **Modern Dashboard:** Clean interface with sidebar navigation and quick-access features.
+- **Responsive Design:** Supports desktop, tablet, and mobile screens.
+- **Responsible AI:** Includes a disclaimer encouraging users to verify AI-generated information.
 
-AI behaviour: Use structured prompts and contextual, specific responses based on user inputs. Avoid generic placeholder answers. Since there is no backend, use browser-based mock AI responses and sample content. Clearly label simulated responses; do not pretend a real AI API is connected.
+## Technologies and Tools Used
 
-Requirements: Working sidebar navigation, functional forms, editable outputs, copy-to-clipboard buttons, loading states, empty states, and responsive design. Store preferences and history locally when appropriate. Include a Responsible AI notice reminding users to verify outputs and avoid sharing confidential information.
+- React
+- Tailwind CSS
+- JavaScript
+- Lovable (AI-powered app builder)
+- GitHub (version control and project hosting)
 
-Constraints: Frontend only, no database, authentication, server, or paid integrations. Use reusable components and polished UI. Prioritise a functional prototype that works without API keys. Keep implementation lightweight.
+## Setup Instructions
 
-This project was built with [Lovable](https://lovable.dev).
+### Prerequisites
 
-## Build with Lovable
+- Node.js and npm
+- Git
+- A code editor, such as Visual Studio Code
 
-Continue developing this project in the [Lovable editor](https://lovable.dev/projects/e2045c14-f764-4027-b8cb-8b7aad819214).
+### Installation
 
-- **Ship faster**: describe what you want to build and Lovable handles the code.
-- **Stay in sync**: every change made in Lovable is committed straight to this repository.
-- **Full ownership**: this code is yours. Push to `main` on GitHub and your changes sync back into Lovable, ready for your next prompt.
+1. Clone the repository:
 
-## Development
+   ```bash
+   git clone <your-repository-url>
+   ```
 
-Prefer working locally? You need Node.js and npm — [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating).
+2. Navigate to the project folder:
 
-```sh
-git clone <this-repository-url>
-cd <repository-name>
-npm i
-npm run dev
-```
+   ```bash
+   cd ai-workplace-productivity-assistant
+   ```
+
+3. Install dependencies:
+
+   ```bash
+   npm install
+   ```
+
+4. Start the development server:
+
+   ```bash
+   npm run dev
+   ```
+
+5. Open the local URL displayed in your terminal.
+
+### AI Integration
+
+The application is designed to support AI integration. Genuine AI-generated responses require a compatible AI service. Without an AI integration, the application may operate in demo mode.
+
+**Note:** This project is designed to operate without a custom backend. Do not expose private API keys in frontend code.
+
+## Team Members
+
+- **Project Developer:** Axolile Fulepu
+
+  Github:`workday-wordsmith-compass.lovable.app`
+
+## Project Status
+
+**Status:** In Development
+
+## Responsible AI Disclaimer
+
+AI-generated content may contain inaccurate or incomplete information. Users should review and verify all outputs before using them in professional communications or workplace decisions. Avoid entering confidential or sensitive workplace information.
+
+## License
+
+This project is available for educational and personal use. Add a suitable open-source license if you intend to distribute it publicly.
